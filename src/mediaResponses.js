@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const getParty = (request, response) => {
-  const file = path.resolve(__dirname, '../client/party.mp4');
+const getMedia = (request, response, filepath) => {
+  const file = path.resolve(__dirname, `${filepath}`);
 
-  fs.stat(file, (err, stats) => {
+  const createHeaders = (err, stats) => {
     if (err) {
       if (err.code === 'ENOENT') {
         response.writeHead(404);
@@ -49,7 +49,9 @@ const getParty = (request, response) => {
     });
 
     return stream;
-  });
+  };
+
+  fs.stat(file, createHeaders);
 };
 
-module.exports.getParty = getParty;
+module.exports.getMedia = getMedia;
